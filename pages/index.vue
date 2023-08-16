@@ -13,17 +13,20 @@
                 <tr v-for="release in releases" :key="release.id">
                     <td>{{ release.name }}</td>
                     <td>{{ release.published_at }}</td>
-                    <td>{{ release.body }}</td>
+                    <td class="body">
+                        <div v-html="micromark(release.body,'utf-8')"></div>
+                    </td>
                 </tr>
             </tbody>
         </table>
-        <div v-if="error">{{ error }}</div>
+        <div v-if="errorMessage">{{ errorMessage }}</div>
     </div>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue';
-import { useFetch } from '@nuxtjs/composition-api';
+<script lang="ts" setup>
+import { ref } from "vue"
+import { micromark } from "micromark"
+
 
 interface Release {
     id: number;
@@ -32,25 +35,49 @@ interface Release {
     body: string;
 }
 
-const releases = ref<Release[]>([]);
-const error = ref<string | null>(null);
+const releases = ref<Release[]>([])
+const errorMessage = ref<string | null>(null)
+if (process.client) {
 
-const { fetch: getReleases } = useFetch(async () => {
-    try {
-        const response = await fetch('https://api.github.com/repos/nuxt/nuxt/releases');
-        if (!response.ok) {
-            throw new Error('Failed to fetch releases');
+    const {data, execute, pending, error, refresh} = await useLazyFetch(`https://api.github.com/repos/nuxt/nuxt/releases`, {
+        onRequest({request, options}) {
+            // Set the request headers
+            options.headers = options.headers || {}
+            options.headers.authorization = "..."
+        },
+        onRequestError({request, options, error}) {
+            // Handle the request errors
+        },
+        onResponse({request, response, options}) {
+            // Process the response data
+            // localStorage.setItem('token', response._data.token)
+
+        },
+        onResponseError({request, response, options}) {
+            // Handle the response errors
         }
-        releases.value = await response.json();
-    } catch (err: any) {
-        error.value = err.message;
-    }
-});
+    })
 
-getReleases();
+    watch(() => data.value, (value) => {
+        if (value) {
+            releases.value = value
+        }
+    })
 
+    onMounted(async () => {
+        await  execute()
+    })
+
+}
 </script>
 
 <style scoped>
-/* You can add styles specific to this page */
+tr td {
+    padding-bottom: 2rem;
+}
+
+.body {
+    white-space: pre-wrap;
+    max-width: 640px;
+}
 </style>
