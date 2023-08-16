@@ -19,13 +19,13 @@
                 </tr>
             </tbody>
         </table>
-        <div v-if="errorMessage">{{ errorMessage }}</div>
     </div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from "vue"
 import { micromark } from "micromark"
+import releasesData from "~/static/releases.json"
 
 
 interface Release {
@@ -35,40 +35,8 @@ interface Release {
     body: string;
 }
 
-const releases = ref<Release[]>([])
-const errorMessage = ref<string | null>(null)
-if (process.client) {
+const releases: Ref<Release[]> = ref(releasesData)
 
-    const {data, execute, pending, error, refresh} = await useLazyFetch(`https://api.github.com/repos/nuxt/nuxt/releases`, {
-        onRequest({request, options}) {
-            // Set the request headers
-            options.headers = options.headers || {}
-            options.headers.authorization = "..."
-        },
-        onRequestError({request, options, error}) {
-            // Handle the request errors
-        },
-        onResponse({request, response, options}) {
-            // Process the response data
-            // localStorage.setItem('token', response._data.token)
-
-        },
-        onResponseError({request, response, options}) {
-            // Handle the response errors
-        }
-    })
-
-    watch(() => data.value, (value) => {
-        if (value) {
-            releases.value = value
-        }
-    })
-
-    onMounted(async () => {
-        await  execute()
-    })
-
-}
 </script>
 
 <style scoped>
