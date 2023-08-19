@@ -54,7 +54,7 @@ onMounted(() => {
   > * {
     display: grid;
     width: 100%;
-    max-width: 640px;
+    max-width: 1024px;
     grid-template-columns: 6rem 1fr;
     gap: 1rem;
 
