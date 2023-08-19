@@ -1,14 +1,16 @@
 <template>
     <div>
-        <h1>GitHub Releases for nuxt/nuxt</h1>
-        <div v-if="releases && releases.length" class="releases">
+        <h1>NuxtJS Updates</h1>
+        <div v-if="releases && releases.length" ref="releasesEl" class="releases">
             <header>
                 <div>Release / Published At</div>
                 <div>Changes</div>
             </header>
             <div v-for="release in releases" :key="release.id" class="release">
                 <div class="release__col1">
-                    <span class="release__name">{{ release.name }}</span>
+                    <span class="release__name"><a :href="`https://github.com/nuxt/nuxt/releases/${release.name}`">{{
+                            release.name
+                        }}</a></span>
                     <small class="release__date">{{ release.published_at }}</small>
                 </div>
 
@@ -24,6 +26,7 @@
 import { ref } from "vue"
 import { micromark } from "micromark"
 import releasesData from "~/static/releases.json"
+import useReleaseEnhancements from "~/server/composables/useReleaseEnhancements"
 
 
 interface Release {
@@ -34,6 +37,11 @@ interface Release {
 }
 
 const releases: Ref<Release[]> = ref(releasesData)
+const releasesEl = ref<HTMLElement | null>(null)
+
+onMounted(() => {
+    useReleaseEnhancements(releasesEl)
+})
 
 </script>
 
@@ -107,6 +115,45 @@ const releases: Ref<Release[]> = ref(releasesData)
   &__date {
     font-size: 0.8rem;
     display: block;
+  }
+
+  h2.changelog,
+  h2.fixes {
+    //display: revert;
+    //
+    //~ {
+    //  p, pre, ul {
+    //
+    //    display: revert;
+    //
+    //  }
+    //}
+  }
+
+  h2.upgrading,
+  h3.contributors {
+    //display: none;
+    //
+    //~ {
+    //  p, pre, ul {
+    //    display: none;
+    //  }
+    //}
+  }
+
+  h2.upgrading,
+  h2.upgrading + p,
+  h2.upgrading + p + pre,
+  h2.upgrading + p + pre + p {
+    display: none;
+  }
+
+
+  h3.contributors,
+  h3.contributors + ul,
+  h3.contributors + p + pre,
+  h3.contributors + p + pre + p {
+    display: none;
   }
 
 
