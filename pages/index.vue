@@ -26,8 +26,6 @@
 import { ref } from "vue"
 import { micromark } from "micromark"
 import releasesData from "~/static/releases.json"
-import useReleaseEnhancements from "~/server/composables/useReleaseEnhancements"
-
 
 interface Release {
     id: number;
