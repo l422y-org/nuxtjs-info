@@ -196,13 +196,13 @@
     "body": "> 2.17.1 is the next patch release for Nuxt 2.\r\n\r\n## 👉 Changelog\r\n\r\n[compare changes](https://github.com/nuxt/nuxt.js/compare/v2.17.0...v2.17.1)\r\n\r\n### 🩹 Fixes\r\n\r\n- **webpack:** Downgrade dev-middleware to fix peer dep issue ([#21626](https://github.com/nuxt/nuxt.js/pull/21626))\r\n- **webpack:** Pin webpack-dev-middleware to 5.0.0 ([#21804](https://github.com/nuxt/nuxt.js/pull/21804))\r\n\r\n### ❤️  Contributors\r\n\r\n- Daniel Roe (@danielroe)\r\n- Lehoczky Zoltán (@Lehoczky)\r\n\r\n\r\n",
     "reactions": {
       "url": "https://api.github.com/repos/nuxt/nuxt/releases/112321360/reactions",
-      "total_count": 10,
-      "+1": 5,
+      "total_count": 12,
+      "+1": 6,
       "-1": 0,
       "laugh": 0,
       "hooray": 1,
       "confused": 0,
-      "heart": 4,
+      "heart": 5,
       "rocket": 0,
       "eyes": 0
     },
